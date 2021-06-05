@@ -10,7 +10,10 @@ const App: FC<Props> = (): JSX.Element => {
   const abc = {
     a: 'Sample text'
   }
+
   const b: string = '<Test string type>'
+  let a: Abc
+  a = 1
 
   return (
     <div className="App">
@@ -27,6 +30,7 @@ const App: FC<Props> = (): JSX.Element => {
           rel="noopener noreferrer"
         >
           Learn React. {abc.a} {b}
+          {a}
         </a>
       </header>
 
