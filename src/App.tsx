@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react'
 import { env } from './environments'
 import { http } from './http'
-// import axios from 'axios'
+import './scss/index.scss'
 
 type Props = any
 
