@@ -1,7 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_script/husky.sh"
 
-echo "----- start checking on your commit"
+echo "----- start checking on your commit "
 
 npx pretty-quick --staged && npm run lint:ts
 
