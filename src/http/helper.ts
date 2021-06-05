@@ -1,3 +1,7 @@
+interface Test {
+  (obj: Object): string
+}
+
 export const serialize: any = (obj: object): string => {
   const str: any = []
   for (const p in obj) {
@@ -8,7 +12,7 @@ export const serialize: any = (obj: object): string => {
   return str.join('&')
 }
 
-export const test: any = (obj: object): string => {
+export const test: Test = (obj: object): string => {
   return JSON.stringify(obj)
 }
 
