@@ -18,7 +18,7 @@ border () {
     for (( i = 0; i < len - 30; ++i )); do
         printf "${GREEN_COLOR}-"
     done
-    printf "\n${GREEN_COLOR}| ${NC}$str ${GREEN_COLOR}|\n"
+    printf "\n${GREEN_COLOR}| ${NC}$str \n"
     for (( i = 0; i < len - 30; ++i )); do
         printf "${GREEN_COLOR}-"
     done
@@ -34,4 +34,4 @@ parse_current_branch() {
 }
 
 now="$(date +'%A %H:%M:%S %d/%m/%Y %Z')"
-printf "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} Hello $(parse_git_user). You are ${GREEN_COLOR}commiting${NC} on: ${BLUE}$(parse_current_branch)${NC} branch ($now)\n"
+border "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} Hello $(parse_git_user). You are ${GREEN_COLOR}commiting${NC} on: ${BLUE}$(parse_current_branch)${NC} branch ($now) 😍\n"
