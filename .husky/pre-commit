@@ -1,5 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+echo "-------------okela"
 
 npx pretty-quick --staged && npm run lint:ts
+
+echo "-------------.okela"
