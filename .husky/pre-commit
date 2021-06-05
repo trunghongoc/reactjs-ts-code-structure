@@ -1,8 +1,8 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+. "$(dirname "$0")/_script/husky.sh"
 
-echo "-------------okela"
+echo "----- start checking on your commit"
 
 npx pretty-quick --staged && npm run lint:ts
 
-echo "-------------.okela"
+echo "----- end checking on your commit"

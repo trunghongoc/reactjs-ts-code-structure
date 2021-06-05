@@ -7,7 +7,7 @@ type Props = {} | undefined
 type Abc = any
 
 const App: FC<Props> = (): JSX.Element => {
-  const abc = {
+  const abc: Abc = {
     a: 'Sample text'
   }
 
