@@ -1,8 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { Button } from './components/Button'
 
-function App() {
+type Props = {} | undefined
+type Abc = any
+
+const App: FC<Props> = (): JSX.Element => {
+  const abc: Abc = {
+    a: 'Sample text'
+  }
+  const b: string = '<Test string type>'
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,17 +19,20 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+
         <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React. {abc.a} {b}
         </a>
       </header>
+
+      <Button />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
