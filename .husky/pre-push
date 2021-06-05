@@ -5,4 +5,4 @@ echo "----- start: checking on your push"
 
 npx pretty-quick --staged && npm run lint:ts
 
-echo "----- start: checking on your push"
+echo "----- end: checking on your push"
