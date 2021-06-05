@@ -40,4 +40,4 @@ now="$(date +'%A %H:%M:%S %d/%m/%Y %Z')"
 border "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} Hello $(parse_git_user). You are ${GREEN_COLOR}pushing${NC} on: ${BLUE}$(parse_current_branch)${NC} branch ($now) 😍"
 printf "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} I'm check lint for you ...${NC}\n"
 npx pretty-quick --staged && npm run lint:ts
-printf "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} All lint is ${GREEN_COLOR}okela${NC} ❤️  ❤️  ❤️️\n"
+printf "${RED_COLOR}>${YELLOW_COLOR}>${GREEN_COLOR}>${NC} All lint are ${GREEN_COLOR}okela${NC} ❤️  ❤️  ❤️️\n"

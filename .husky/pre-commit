@@ -18,7 +18,7 @@ border () {
     for (( i = 0; i < len - 30; ++i )); do
         printf "${GREEN_COLOR}-"
     done
-    printf "\n${GREEN_COLOR}| ${NC}$str \n"
+    printf "\n${GREEN_COLOR}| ${NC}$str\n"
     for (( i = 0; i < len - 30; ++i )); do
         printf "${GREEN_COLOR}-"
     done
