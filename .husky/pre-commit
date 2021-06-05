@@ -1,5 +1,5 @@
 #!/bin/sh
-. "$(dirname "$0")/_script/husky.sh"
+. "$(dirname "$0")/_/husky.sh"
 
 echo "----- start checking on your commit "
 
