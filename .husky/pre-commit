@@ -1,8 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-echo "----- start checking on your commit "
-
-npx pretty-quick --staged && npm run lint:ts
-
-echo "----- end checking on your commit"
+echo "----- Have a nice coding"
