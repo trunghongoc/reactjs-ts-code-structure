@@ -1,29 +1,31 @@
 import axios from 'axios'
 import { env } from './../environments'
-// import { serialize } from './helper'
+import { authHeader } from './helper'
+import { IAxiosHeader, HttpConfigType } from './http'
 
-let responseConfig: any = null
+declare const window: HttpConfigType
 
 const { fileConfigPath } = env
 
-const originnalAxios: any = axios.create({
+export const originalAxios: any = axios.create({
   timeout: 10000,
   headers: { 'X-Custom-Header': 'foobar' }
 })
 
+// const initialHeaders: AxiosHeader = authHeader()
 const http: any = axios.create({
-  baseURL: 'https://some-domain.com/api/',
+  baseURL: '',
   timeout: 1000,
-  headers: { 'X-Custom-Header': 'foobar' }
+  headers: {}
 })
 
 http.interceptors.request.use(async (config: any): Promise<any> => {
-  if (!responseConfig) {
-    const response: any = await originnalAxios.get(`/${fileConfigPath}`)
-    responseConfig = await response.data
+  if (!window?.httpConfig?.baseURL) {
+    const response: any = await originalAxios.get(`/${fileConfigPath}`)
+    window.httpConfig = response.data
   }
 
-  config.baseURL = await responseConfig.apiUrl
+  config.baseURL = await window?.httpConfig?.baseURL
 
   return config
 })

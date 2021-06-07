@@ -1,3 +1,6 @@
+import { UserType } from './../types/user'
+import { IAxiosHeader } from './http'
+
 export const serialize: any = (obj: object): string => {
   const str: any = []
   for (const p in obj) {
@@ -8,10 +11,13 @@ export const serialize: any = (obj: object): string => {
   return str.join('&')
 }
 
-export const test: any = (obj: object): string => {
-  return JSON.stringify(obj)
-}
+export function authHeader(): IAxiosHeader {
+  const userLocalStorage: string | null = localStorage.getItem('user') || '{}'
+  const user: UserType = JSON.parse(userLocalStorage)
 
-export function test2(obj: object): string {
-  return JSON.stringify(obj)
+  if (user && user.accessToken) {
+    return { Authorization: 'Bearer ' + user.accessToken }
+  } else {
+    return {}
+  }
 }
