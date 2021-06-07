@@ -2,6 +2,7 @@ import axios from 'axios'
 import { env } from './../environments'
 import { authHeader } from './helper'
 import { IAxiosHeader, HttpConfigType } from './http'
+import UserService from './../services/user/user.service'
 
 declare const window: HttpConfigType
 
@@ -15,9 +16,13 @@ export const originalAxios: any = axios.create({
 const initialHeaders: IAxiosHeader = authHeader()
 const http: any = axios.create({
   baseURL: '',
-  timeout: 1000,
+  timeout: 10000,
   headers: initialHeaders
 })
+
+const getNewTokenIfExpired: any = (): string => {
+  return UserService.getTokenFromLocalStorage()
+}
 
 http.interceptors.request.use(async (config: any): Promise<any> => {
   if (!window?.httpConfig?.baseURL) {
@@ -25,6 +30,11 @@ http.interceptors.request.use(async (config: any): Promise<any> => {
     window.httpConfig = response.data
   }
 
+  const newToken: string = await getNewTokenIfExpired()
+  config.headers = {
+    ...config.headers,
+    Authorization: newToken ? `Bearer ${newToken}` : ''
+  }
   config.baseURL = await window?.httpConfig?.baseURL
 
   return config
@@ -84,5 +94,49 @@ http.head = async (url: string, payload: object): Promise<any> => {
   return request(Method.HEAD, url, payload)
 }
 */
+
+http.interceptors.response.use(
+  (response: any): any => {
+    return response
+  },
+  (err: any): any => {
+    return new Promise((resolve?: any, reject?: any): Promise<any> => {
+      const originalReq: any = err.config
+
+      if (
+        err?.respons?.status === 401 &&
+        err?.config &&
+        !err?.config?.__isRetryRequest
+      ) {
+        originalReq._retry = true
+
+        const res: any = originalAxios
+          .post('/refresh', {
+            token: localStorage.getItem('token'),
+            refresh_token: localStorage.getItem('refresh_token')
+          })
+          .then((_res: any): any => {
+            UserService.setCurrentUser(_res.data)
+            // this.setSession({ token: res.token, refresh_token: res.refresh })
+            // originalReq.headers['Token'] = _res.token
+            // originalReq.headers['Device'] = 'device'
+
+            http.headers = {
+              ...http.headers,
+              Authorization: _res?.data?.accessToken
+                ? `Bearer ${_res.data.accessToken}`
+                : ''
+            }
+
+            return http(originalReq)
+          })
+
+        resolve(res)
+      }
+
+      return Promise.reject(err)
+    })
+  }
+)
 
 export { http }
