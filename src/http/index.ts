@@ -12,11 +12,11 @@ export const originalAxios: any = axios.create({
   headers: { 'X-Custom-Header': 'foobar' }
 })
 
-// const initialHeaders: AxiosHeader = authHeader()
+const initialHeaders: IAxiosHeader = authHeader()
 const http: any = axios.create({
   baseURL: '',
   timeout: 1000,
-  headers: {}
+  headers: initialHeaders
 })
 
 http.interceptors.request.use(async (config: any): Promise<any> => {

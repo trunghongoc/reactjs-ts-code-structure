@@ -1,3 +1,3 @@
-export type UserType = {
+export interface UserType {
   accessToken: string
 }

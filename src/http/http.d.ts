@@ -2,7 +2,7 @@ export interface IAxiosHeader {
   Authorization?: string
 }
 
-export type HttpConfigType = {
+export interface HttpConfigType {
   httpConfig: {
     baseURL: string
   }
