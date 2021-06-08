@@ -1,5 +1,5 @@
 import { UserType } from './../types/user'
-import { IAxiosHeader } from './http'
+import { IAxiosHeader } from './type'
 
 export const serialize: any = (obj: object): string => {
   const str: any = []

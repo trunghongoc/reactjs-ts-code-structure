@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { env } from './../environments'
 import { authHeader } from './helper'
-import { IAxiosHeader, HttpConfigType } from './http'
+import { IAxiosHeader, HttpConfigType } from './type'
 import UserService from './../services/user/user.service'
 
 declare const window: HttpConfigType

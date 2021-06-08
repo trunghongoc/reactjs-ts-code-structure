@@ -1,9 +1,14 @@
-import { FC, useEffect } from 'react'
+import { FC, Suspense, useEffect } from 'react'
 import { env } from './environments'
 import { http } from './http'
 import './scss/index.scss'
-import { Counter } from './components/Counter'
 import { useSelector } from 'react-redux'
+import { RouterItemType } from './router/type'
+
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+
+import { Counter } from './components/Counter'
+import { routers } from './router'
 
 type Props = any
 
@@ -35,6 +40,44 @@ const App: FC<Props> = (): JSX.Element => {
 
       <p>Current counter: {count}</p>
       <Counter />
+
+      <Router>
+        <div>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/about">About</Link>
+              </li>
+              <li>
+                <Link to="/users">Users</Link>
+              </li>
+            </ul>
+          </nav>
+
+          {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+
+          <Suspense fallback={<div>Loading...</div>}>
+            <Switch>
+              {routers.map(
+                (router: RouterItemType, index: number): JSX.Element => {
+                  const Page: FC = router.component
+                  // const { component: Page } = router
+
+                  return (
+                    <Route path={router.path} exact={router.exact} key={index}>
+                      <Page />
+                    </Route>
+                  )
+                }
+              )}
+            </Switch>
+          </Suspense>
+        </div>
+      </Router>
     </>
   )
 }

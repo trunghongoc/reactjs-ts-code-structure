@@ -4,7 +4,7 @@ import { env } from './environments'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { originalAxios } from './http'
-import { HttpConfigType } from './http/http'
+import { HttpConfigType } from './http/type'
 
 import store from './redux/store'
 import { Provider } from 'react-redux'
