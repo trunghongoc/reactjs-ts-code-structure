@@ -49,7 +49,6 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["warning"],
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
@@ -112,5 +111,6 @@
       "node_modules/**/*.ts",
       "coverage/lcov-report/*.js"
     ]
-  }
+  },
+  "no-empty-pattern": false
 }

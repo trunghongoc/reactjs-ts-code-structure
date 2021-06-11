@@ -1,7 +1,7 @@
 import { FC, Suspense } from 'react'
-import { HOC, Props } from './type'
+import { Props } from './type'
 
-export const withSuspense: HOC =
+export const withSuspense: any =
   (WrappedComponent: FC<Props>): FC<Props> =>
   (props: Props): JSX.Element => {
     return (

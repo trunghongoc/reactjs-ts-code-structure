@@ -3,11 +3,19 @@ import { env } from './environments'
 import { http } from './http'
 import './scss/index.scss'
 import { useSelector } from 'react-redux'
+
+import { StoreType } from './redux/type'
+import { UserType } from './types/user'
 import { RouterItemType } from './router/type'
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Link,
+  Redirect,
+  Route
+} from 'react-router-dom'
 
-import { Counter } from './components/Counter'
 import { routers } from './router'
 
 type Props = any
@@ -18,7 +26,9 @@ interface VoidFunction {
 }
 
 const App: FC<Props> = (): JSX.Element => {
-  const count: number = useSelector((state: any): number => state.counter.value)
+  const currentUser: UserType = useSelector(
+    (store: StoreType): any => store.user.currentUser
+  )
 
   const fetchUser: VoidFunction = (a?: number): void => {
     http.get('/todos/1', {
@@ -34,13 +44,6 @@ const App: FC<Props> = (): JSX.Element => {
 
   return (
     <>
-      <p>ENV: {JSON.stringify(env)}</p>
-
-      <button onClick={fetchUser}>Fetch API</button>
-
-      <p>Current counter: {count}</p>
-      <Counter />
-
       <Router>
         <div>
           <nav>
@@ -57,19 +60,15 @@ const App: FC<Props> = (): JSX.Element => {
             </ul>
           </nav>
 
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
               {routers.map(
                 (router: RouterItemType, index: number): JSX.Element => {
                   const Page: FC = router.component
-                  // const { component: Page } = router
 
                   return (
                     <Route path={router.path} exact={router.exact} key={index}>
-                      <Page />
+                      {currentUser.id ? <Page /> : <Redirect to="/login" />}
                     </Route>
                   )
                 }
