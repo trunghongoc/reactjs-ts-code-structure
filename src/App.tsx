@@ -1,22 +1,13 @@
-import { FC, Suspense, useEffect } from 'react'
-import { env } from './environments'
+import { FC, useEffect } from 'react'
 import { http } from './http'
 import './scss/index.scss'
 import { useSelector } from 'react-redux'
 
 import { StoreType } from './redux/type'
 import { UserType } from './types/user'
-import { RouterItemType } from './router/type'
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Link,
-  Redirect,
-  Route
-} from 'react-router-dom'
-
-import { routers } from './router'
+import { BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { AdminLayout } from './layouts/Admin'
 
 type Props = any
 
@@ -45,37 +36,7 @@ const App: FC<Props> = (): JSX.Element => {
   return (
     <>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/users">Users</Link>
-              </li>
-            </ul>
-          </nav>
-
-          <Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-              {routers.map(
-                (router: RouterItemType, index: number): JSX.Element => {
-                  const Page: FC = router.component
-
-                  return (
-                    <Route path={router.path} exact={router.exact} key={index}>
-                      {currentUser.id ? <Page /> : <Redirect to="/login" />}
-                    </Route>
-                  )
-                }
-              )}
-            </Switch>
-          </Suspense>
-        </div>
+        {currentUser.id || true ? <AdminLayout /> : <Redirect to="/login" />}
       </Router>
     </>
   )
