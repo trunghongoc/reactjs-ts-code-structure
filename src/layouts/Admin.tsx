@@ -1,6 +1,7 @@
 import { FC, Suspense, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Layout, Menu, Breadcrumb } from 'antd'
+import { Layout, Menu, Breadcrumb, Affix, Dropdown } from 'antd'
+import { DownOutlined } from '@ant-design/icons'
 // import { StoreType } from './redux/type'
 import { UserType } from './../types/user'
 import './admin.scss'
@@ -24,7 +25,7 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
   }
 
   const isLogedIn: boolean = useMemo((): boolean => {
-    return !!user.id
+    return !!user.id || true
   }, [user])
 
   const layoutClass: string = useMemo((): string => {
@@ -35,18 +36,97 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
     <div className={layoutClass}>
       <Layout className="layout">
         {isLogedIn && (
-          <Header>
-            <div className="logo" />
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['home']}>
-              <Menu.Item key="home" onClick={(): void => navigateTo('/')}>
-                Dashboard
-              </Menu.Item>
+          <Affix offsetTop={0}>
+            <Header>
+              <div className="logo" />
+              <Menu
+                theme="dark"
+                mode="horizontal"
+                defaultSelectedKeys={['home']}
+              >
+                <Menu.Item key="home" onClick={(): void => navigateTo('/')}>
+                  Dashboard
+                </Menu.Item>
 
-              <Menu.Item key="about" onClick={(): void => navigateTo('/about')}>
-                About
-              </Menu.Item>
-            </Menu>
-          </Header>
+                <Menu.Item
+                  key="roles"
+                  onClick={(): void => navigateTo('/roles')}
+                >
+                  Roles
+                </Menu.Item>
+
+                <Menu.Item
+                  key="operators"
+                  onClick={(): void => navigateTo('/operators')}
+                >
+                  Operators
+                </Menu.Item>
+
+                <Menu.Item
+                  key="audit-trail"
+                  onClick={(): void => navigateTo('/audit-trail')}
+                >
+                  Audit trail
+                </Menu.Item>
+
+                <Menu.Item
+                  key="corporates"
+                  onClick={(): void => navigateTo('/corporates')}
+                >
+                  Corporates
+                </Menu.Item>
+
+                <Menu.Item
+                  key="payroll-payment-report"
+                  onClick={(): void => navigateTo('/payroll-payment-report')}
+                >
+                  Payroll payment report
+                </Menu.Item>
+
+                <Menu.Item
+                  key="onboard-new-corporate"
+                  onClick={(): void => navigateTo('/onboard-new-corporate')}
+                >
+                  Onboard new corporate
+                </Menu.Item>
+
+                <Menu.Item
+                  key="workers"
+                  onClick={(): void => navigateTo('/workers')}
+                >
+                  Workers
+                </Menu.Item>
+
+                <Menu.Item
+                  key="hub-account"
+                  onClick={(): void => navigateTo('/hub-account')}
+                >
+                  Hub account
+                </Menu.Item>
+
+                <Menu.Item
+                  key="spoke-account"
+                  onClick={(): void => navigateTo('/spoke-account')}
+                >
+                  Spoke account
+                </Menu.Item>
+
+                <Menu.Item
+                  key="notifications"
+                  onClick={(): void => navigateTo('/notifications')}
+                >
+                  Notifications
+                </Menu.Item>
+
+                <Menu.Item
+                  key="export-reports"
+                  onClick={(): void => navigateTo('/export-reports')}
+                >
+                  Export reports
+                </Menu.Item>
+              </Menu>
+            </Header>
+          </Affix>
         )}
 
         <Content>

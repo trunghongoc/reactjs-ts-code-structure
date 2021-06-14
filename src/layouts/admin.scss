@@ -1,32 +1,71 @@
-.site-layout-content {
-  padding: 24px;
-  background: #fff;
-  height: 100%;
-}
-
-#components-layout-demo-top .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.ant-row-rtl #components-layout-demo-top .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
-}
-
 .admin-layout {
+  .ant-layout-header {
+    $height: 52px;
+
+    line-height: $height;
+    height: $height;
+    padding: 0 15px;
+  }
+
   .ant-layout-content {
-    min-height: 100vh;
     background: #fff;
-    padding: 0 50px;
+    padding: 0 15px;
   }
 
   &.-is-logedin {
     .ant-layout-content {
-      min-height: calc(100vh - 64px);
+      background: #fff;
+    }
+  }
+
+  .ant-layout-header {
+    background: transparent;
+  }
+
+  ul {
+    &.ant-menu {
+      &.ant-menu-dark {
+        background: transparent;
+        $active-color: #1890ff;
+
+        li {
+          &.ant-menu-item {
+            span {
+              &.ant-menu-title-content {
+                color: #001529;
+              }
+            }
+
+            &:hover,
+            &.ant-menu-item-selected {
+              background-color: transparent;
+              color: $active-color;
+
+              span {
+                &.ant-menu-title-content {
+                  color: $active-color;
+                }
+              }
+            }
+          }
+
+          &.ant-menu-submenu {
+            .ant-menu-submenu-title {
+              span {
+                &.anticon-ellipsis {
+                  color: #001529;
+                }
+
+                &:hover {
+                  &.anticon-ellipsis {
+                    color: $active-color;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

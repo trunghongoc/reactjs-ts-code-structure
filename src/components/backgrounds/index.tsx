@@ -15,7 +15,7 @@ export const BackgroundTasks: FC<Props> = (): JSX.Element => {
 
   useEffect((): void => {
     if (!user.id) {
-      history.push('/login')
+      // history.push('/login')
     }
   }, [user, history])
 
