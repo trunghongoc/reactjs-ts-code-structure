@@ -1,6 +1,7 @@
 import { http } from './../../http'
 import { UserType } from './../../types/user'
-
+import store from './../../redux/store'
+import { setCurrentUser } from './../../redux/reducers/userSlice'
 export class UserService {
   getPublicContent(): Promise<any> {
     return http.get('/all')
@@ -19,18 +20,23 @@ export class UserService {
   }
 
   setCurrentUser(user: UserType): void {
+    store.dispatch(setCurrentUser(user))
     localStorage.setItem('user', JSON.stringify(user))
   }
 
   removeCurrentUser(): void {
     localStorage.removeItem('user')
+    store.dispatch(setCurrentUser(null))
   }
 
   getTokenFromLocalStorage(): string {
-    const userJson: string | null = localStorage.getItem('user') || ''
-    const user: UserType = JSON.parse(userJson)
+    const userJson: string = localStorage.getItem('user') || ''
+    let user: UserType | null = null
+    if (userJson) {
+      user = JSON.parse(userJson)
+    }
 
-    return user?.accessToken || ''
+    return (user && user?.accessToken) || ''
   }
 }
 

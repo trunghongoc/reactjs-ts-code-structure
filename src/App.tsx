@@ -7,7 +7,7 @@ import { StoreType } from './redux/type'
 import { UserType } from './types/user'
 
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AdminLayout } from './layouts/Admin'
+import { AdminLayout } from './layouts/verticalAdminMenu'
 import { BackgroundTasks } from './components/backgrounds'
 
 type Props = any

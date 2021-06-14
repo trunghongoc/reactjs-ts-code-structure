@@ -1,50 +1,38 @@
 import { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, Image } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 
-// import { http } from './../../http'
-import { setCurrentUser } from './../../redux/reducers/userSlice'
-
 import { UserType } from './../../types/user'
+
+import AuthService from './../../services/user/auth.service'
 
 import './style.scss'
 
-type Props = {} | undefined
+import { FormDataType, PropsType } from './type'
 
-const NormalLoginForm: FC<Props> = (): JSX.Element => {
+const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
   const [loading, setLoading] = useState(false)
-  const dispatch: any = useDispatch()
   const history: any = useHistory()
 
   const handleOnLoginSuccessfully: any = (user: UserType): void => {
-    dispatch(
-      setCurrentUser({
-        ...user,
-        id: 1,
-        accessToken: '123456abc'
-      })
-    )
-
     setLoading(false)
     history.push('/')
   }
 
-  const onFinish: any = (values: object): void => {
+  const onFinish: any = (values: FormDataType): void => {
     setLoading(true)
     handleOnLoginSuccessfully(values)
 
-    /*
-    http
-      .post('/login', values)
-      .then((res: any): void => {
-        handleOnLoginSuccessfully(values)
-      })
-      .catch((err: any): void => {
-        setLoading(false)
-      })
-    */
+    if (values) {
+      AuthService.login(values.email || '', values.password || '')
+        .then((res: any): void => {
+          handleOnLoginSuccessfully(values)
+        })
+        .catch((err: any): void => {
+          setLoading(false)
+        })
+    }
   }
 
   return (

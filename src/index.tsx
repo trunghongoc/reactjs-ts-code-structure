@@ -5,13 +5,24 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { originalAxios } from './http'
 import { HttpConfigType } from './http/type'
+import UserService from './services/user/user.service'
 
 import store from './redux/store'
 import { Provider } from 'react-redux'
 
+import { UserType } from './types/user'
+
 declare const window: HttpConfigType
 
 const { fileConfigPath } = env
+
+const loadUserFromLocalStorage: VoidFunction = (): void => {
+  const userStr: string | null = localStorage.getItem('user')
+  if (userStr) {
+    const user: UserType = JSON.parse(userStr)
+    UserService.setCurrentUser(user)
+  }
+}
 
 const renderApp: VoidFunction = (): void => {
   ReactDOM.render(
@@ -24,7 +35,7 @@ const renderApp: VoidFunction = (): void => {
   )
 }
 
-const initHttpBeforeRenderApp: VoidFunction = (): void => {
+const initHttpAndRenderApp: VoidFunction = (): void => {
   originalAxios
     .get(`/${fileConfigPath}`)
     .then((res: any): any => {
@@ -37,8 +48,10 @@ const initHttpBeforeRenderApp: VoidFunction = (): void => {
 }
 
 const initApp: any = async (): Promise<any> => {
+  loadUserFromLocalStorage()
+
   if (!window?.httpConfig?.baseURL) {
-    initHttpBeforeRenderApp()
+    initHttpAndRenderApp()
   } else {
     renderApp()
   }

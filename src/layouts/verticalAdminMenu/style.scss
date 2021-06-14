@@ -1,0 +1,24 @@
+.admin-layout {
+  .logo {
+    height: 32px;
+    margin: 16px;
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .site-layout {
+    .page-header {
+      background: #eff2f5;
+      padding: 0 15px;
+
+      .collapsed-icon {
+        font-size: 18px;
+        cursor: pointer;
+        transition: color 0.3s;
+
+        &:hover {
+          color: #1890ff;
+        }
+      }
+    }
+  }
+}

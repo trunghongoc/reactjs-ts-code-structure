@@ -1,15 +1,15 @@
 import { FC, Suspense, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { Layout, Menu, Breadcrumb, Affix, Dropdown } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { Layout, Menu, Breadcrumb, Affix } from 'antd'
+// import { DownOutlined } from '@ant-design/icons'
 // import { StoreType } from './redux/type'
-import { UserType } from './../types/user'
-import './admin.scss'
+import { UserType } from './../../types/user'
+import './style.scss'
 
 import { Switch, Route, useHistory } from 'react-router-dom'
 
-import { RouterItemType } from './../router/type'
-import { routers } from './../router'
+import { RouterItemType } from './../../router/type'
+import { routers } from './../../router'
 
 const { Header, Content } = Layout
 
@@ -25,7 +25,7 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
   }
 
   const isLogedIn: boolean = useMemo((): boolean => {
-    return !!user.id || true
+    return user && !!user.id
   }, [user])
 
   const layoutClass: string = useMemo((): string => {
@@ -84,13 +84,6 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
                 </Menu.Item>
 
                 <Menu.Item
-                  key="onboard-new-corporate"
-                  onClick={(): void => navigateTo('/onboard-new-corporate')}
-                >
-                  Onboard new corporate
-                </Menu.Item>
-
-                <Menu.Item
                   key="workers"
                   onClick={(): void => navigateTo('/workers')}
                 >
@@ -109,6 +102,13 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
                   onClick={(): void => navigateTo('/spoke-account')}
                 >
                   Spoke account
+                </Menu.Item>
+
+                <Menu.Item
+                  key="onboard-new-corporate"
+                  onClick={(): void => navigateTo('/onboard-new-corporate')}
+                >
+                  Onboard new corporate
                 </Menu.Item>
 
                 <Menu.Item

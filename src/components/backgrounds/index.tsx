@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect, useMemo } from 'react'
 
 import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -13,11 +13,15 @@ export const BackgroundTasks: FC<Props> = (): JSX.Element => {
   )
   const history: any = useHistory()
 
+  const isLogedIn: boolean = useMemo((): boolean => {
+    return user && !!user.id
+  }, [user])
+
   useEffect((): void => {
-    if (!user.id) {
-      // history.push('/login')
+    if (!isLogedIn) {
+      history.push('/login')
     }
-  }, [user, history])
+  }, [isLogedIn, history])
 
   return <></>
 }
