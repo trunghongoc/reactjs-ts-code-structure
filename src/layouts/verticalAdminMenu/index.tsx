@@ -1,21 +1,14 @@
-import { FC, Suspense, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Layout, Menu, Breadcrumb, Affix } from 'antd'
+import { FC, Suspense, useEffect, useMemo, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Layout, Menu, Spin } from 'antd'
 import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
   UserOutlined,
-  UploadOutlined,
-  VideoCameraOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   LaptopOutlined,
   NotificationOutlined
 } from '@ant-design/icons'
-// import { StoreType } from './redux/type'
+import { StoreType } from './../../redux/type'
 import { UserType } from './../../types/user'
 import './style.scss'
 
@@ -24,18 +17,32 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 import { RouterItemType } from './../../router/type'
 import { routers } from './../../router'
 import AuthService from './../../services/user/auth.service'
+import { setGlobalSpin } from './../../redux/reducers/spinSlice'
 
 const { Header, Content, Sider } = Layout
 const { SubMenu } = Menu
 
 type Props = {} | undefined
 
+const FallbackLoading: FC<Props> = (): JSX.Element => {
+  return (
+    <div className="fallback-loading">
+      <Spin />
+    </div>
+  )
+}
+
 export const AdminLayout: FC<Props> = (): JSX.Element => {
   const history: any = useHistory()
   const user: UserType = useSelector(
-    (state: any): UserType => state.user.currentUser
+    (state: StoreType): UserType => state.user.currentUser
   )
+  const isShowGlobalSpin: boolean = useSelector(
+    (state: StoreType): boolean => state.spin.isShowGlobalSpin
+  )
+  const dispatch: any = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
+  const [, setCurrentMenuKeys] = useState<string[] | []>([])
 
   const isLogedIn: boolean = useMemo((): boolean => {
     return user && !!user.id
@@ -53,13 +60,23 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
     setCollapsed(!collapsed)
   }
 
-  const navigateTo: any = (path: string): void => {
+  const navigateTo: any = (activeKey: string, path: string): void => {
+    setCurrentMenuKeys([activeKey])
+
     history.push(path)
   }
 
   const logout: VoidFunction = (): void => {
+    setCurrentMenuKeys([])
+    dispatch(setGlobalSpin(true))
     AuthService.logout()
   }
+
+  useEffect((): void => {
+    if (isLogedIn) {
+      dispatch(setGlobalSpin(false))
+    }
+  }, [isLogedIn, dispatch])
 
   return (
     <div className={className}>
@@ -77,22 +94,29 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
             collapsed={collapsed}
           >
             <div className="logo" />
+            {/* defaultSelectedKeys={currentMenuKeys}
+            defaultOpenKeys={currentMenuKeys} */}
             <Menu
               theme="dark"
               mode="inline"
-              defaultSelectedKeys={['']}
-              defaultOpenKeys={['']}
               style={{ height: '100%', borderRight: 0 }}
             >
               <SubMenu key="user" icon={<UserOutlined />} title={userName}>
                 <Menu.Item key="user__info">Infomation</Menu.Item>
+                <Menu.Item
+                  key="user__login"
+                  onClick={(): void => navigateTo('user__login', '/login')}
+                >
+                  Login
+                </Menu.Item>
+
                 <Menu.Item key="user__logout" onClick={logout}>
                   Logout
                 </Menu.Item>
               </SubMenu>
 
               <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                <Menu.Item key="1" onClick={(): void => navigateTo('/')}>
+                <Menu.Item key="1" onClick={(): void => navigateTo('1', '/')}>
                   option1
                 </Menu.Item>
                 <Menu.Item key="2">option2</Menu.Item>
@@ -144,7 +168,7 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
           </span>
 
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<FallbackLoading />}>
               <Switch>
                 {routers.map(
                   (router: RouterItemType, index: number): JSX.Element => {
@@ -166,6 +190,12 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
             </Suspense>
           </Content>
         </Layout>
+
+        {isShowGlobalSpin && (
+          <div className="loading-spin">
+            <Spin />
+          </div>
+        )}
       </Layout>
     </div>
   )

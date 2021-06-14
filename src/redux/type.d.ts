@@ -5,4 +5,7 @@ export interface StoreType {
   user: {
     currentUser: UserType
   }
+  spin: {
+    isShowGlobalSpin: boolean
+  }
 }

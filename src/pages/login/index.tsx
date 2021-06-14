@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, Image } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
@@ -7,6 +8,8 @@ import { UserType } from './../../types/user'
 
 import AuthService from './../../services/user/auth.service'
 
+import { setGlobalSpin } from './../../redux/reducers/spinSlice'
+
 import './style.scss'
 
 import { FormDataType, PropsType } from './type'
@@ -14,9 +17,11 @@ import { FormDataType, PropsType } from './type'
 const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
   const [loading, setLoading] = useState(false)
   const history: any = useHistory()
+  const dispatch: any = useDispatch()
 
   const handleOnLoginSuccessfully: any = (user: UserType): void => {
     setLoading(false)
+    dispatch(setGlobalSpin(true))
     history.push('/')
   }
 
@@ -35,11 +40,22 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
     }
   }
 
+  const logout: any = (): void => {
+    AuthService.logout()
+  }
+
+  useEffect((): void => {
+    dispatch(setGlobalSpin(false))
+    logout()
+  }, [dispatch])
+
   return (
     <Form
       name="normal_login"
       className="login-page"
       initialValues={{
+        email: 'a@a.com',
+        password: '1',
         remember: true
       }}
       onFinish={onFinish}

@@ -1,4 +1,17 @@
+.fallback-loading {
+  text-align: center;
+}
+
 .admin-layout {
+  .loading-spin {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .logo {
     height: 32px;
     margin: 16px;
