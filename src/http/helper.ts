@@ -16,8 +16,17 @@ export function authHeader(): IAxiosHeader {
   const user: UserType = JSON.parse(userLocalStorage)
 
   if (user && user.accessToken) {
-    return { Authorization: `Bearer ${user.accessToken}` }
+    return {
+      'Authorization': `Bearer ${user.accessToken}`,
+      'Access-Control-Allow-Origin': '*',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   } else {
-    return {}
+    return {
+      'Access-Control-Allow-Origin': '*',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
   }
 }

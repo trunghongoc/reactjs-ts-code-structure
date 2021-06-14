@@ -112,5 +112,6 @@
       "coverage/lcov-report/*.js"
     ]
   },
-  "no-empty-pattern": false
+  "no-empty-pattern": false,
+  "no-console": [true, "log", "warning"]
 }

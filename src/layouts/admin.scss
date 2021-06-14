@@ -1,7 +1,3 @@
-.ant-layout-content {
-  min-height: calc(100vh - 64px);
-}
-
 .site-layout-content {
   padding: 24px;
   background: #fff;
@@ -19,4 +15,18 @@
 .ant-row-rtl #components-layout-demo-top .logo {
   float: right;
   margin: 16px 0 16px 24px;
+}
+
+.admin-layout {
+  .ant-layout-content {
+    min-height: 100vh;
+    background: #fff;
+    padding: 0 50px;
+  }
+
+  &.-is-logedin {
+    .ant-layout-content {
+      min-height: calc(100vh - 64px);
+    }
+  }
 }

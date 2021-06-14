@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux'
 import { StoreType } from './redux/type'
 import { UserType } from './types/user'
 
-import { BrowserRouter as Router, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { AdminLayout } from './layouts/Admin'
+import { BackgroundTasks } from './components/backgrounds'
 
 type Props = any
 
@@ -20,6 +21,12 @@ const App: FC<Props> = (): JSX.Element => {
   const currentUser: UserType = useSelector(
     (store: StoreType): any => store.user.currentUser
   )
+
+  /*
+  const isLogedIn: boolean = useMemo((): boolean => {
+    return !!currentUser.id
+  }, [currentUser])
+  */
 
   const fetchUser: VoidFunction = (a?: number): void => {
     http.get('/todos/1', {
@@ -36,7 +43,9 @@ const App: FC<Props> = (): JSX.Element => {
   return (
     <>
       <Router>
-        {currentUser.id || true ? <AdminLayout /> : <Redirect to="/login" />}
+        <AdminLayout />
+        <BackgroundTasks />
+        {currentUser && null}
       </Router>
     </>
   )
