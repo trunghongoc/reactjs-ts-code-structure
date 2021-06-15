@@ -1,12 +1,10 @@
-import { FC, Suspense, useEffect, useMemo, useState } from 'react'
+import { FC, Suspense, useEffect, useMemo, useState, lazy } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Layout, Menu, Spin } from 'antd'
+import { Layout, Breadcrumb, Spin } from 'antd'
 import {
-  UserOutlined,
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  LaptopOutlined,
-  NotificationOutlined
+  HomeOutlined
 } from '@ant-design/icons'
 import { StoreType } from './../../redux/type'
 import { UserType } from './../../types/user'
@@ -16,11 +14,11 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 
 import { RouterItemType } from './../../router/type'
 import { routers } from './../../router'
-import AuthService from './../../services/user/auth.service'
+// import AuthService from './../../services/user/auth.service'
 import { setGlobalSpin } from './../../redux/reducers/spinSlice'
 
+const LeftMenu: FC = lazy((): Promise<any> => import('./Menu'))
 const { Header, Content, Sider } = Layout
-const { SubMenu } = Menu
 
 type Props = {} | undefined
 
@@ -48,10 +46,6 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
     return user && !!user.id
   }, [user])
 
-  const userName: string = useMemo((): string => {
-    return isLogedIn && user?.username ? user.username : ''
-  }, [isLogedIn, user])
-
   const className: string = useMemo((): string => {
     return isLogedIn ? 'admin-layout -is-loged-in' : 'admin-layout'
   }, [isLogedIn])
@@ -65,11 +59,13 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
 
     history.push(path)
   }
-
-  const logout: VoidFunction = (): void => {
-    setCurrentMenuKeys([])
-    dispatch(setGlobalSpin(true))
-    AuthService.logout()
+  const navigateToWithPrevent: any = (
+    event: MouseEvent,
+    activeKey: string,
+    path: string
+  ): void => {
+    event.preventDefault()
+    navigateTo(activeKey, path)
   }
 
   useEffect((): void => {
@@ -96,52 +92,9 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
             <div className="logo" />
             {/* defaultSelectedKeys={currentMenuKeys}
             defaultOpenKeys={currentMenuKeys} */}
-            <Menu
-              theme="dark"
-              mode="inline"
-              style={{ height: '100%', borderRight: 0 }}
-            >
-              <SubMenu key="user" icon={<UserOutlined />} title={userName}>
-                <Menu.Item key="user__info">Infomation</Menu.Item>
-                <Menu.Item
-                  key="user__login"
-                  onClick={(): void => navigateTo('user__login', '/login')}
-                >
-                  Login
-                </Menu.Item>
-
-                <Menu.Item key="user__logout" onClick={logout}>
-                  Logout
-                </Menu.Item>
-              </SubMenu>
-
-              <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                <Menu.Item key="1" onClick={(): void => navigateTo('1', '/')}>
-                  option1
-                </Menu.Item>
-                <Menu.Item key="2">option2</Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
-              </SubMenu>
-
-              <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                <Menu.Item key="5">option5</Menu.Item>
-                <Menu.Item key="6">option6</Menu.Item>
-                <Menu.Item key="7">option7</Menu.Item>
-                <Menu.Item key="8">option8</Menu.Item>
-              </SubMenu>
-
-              <SubMenu
-                key="sub3"
-                icon={<NotificationOutlined />}
-                title="subnav 3"
-              >
-                <Menu.Item key="9">option9</Menu.Item>
-                <Menu.Item key="10">option10</Menu.Item>
-                <Menu.Item key="11">option11</Menu.Item>
-                <Menu.Item key="12">option12</Menu.Item>
-              </SubMenu>
-            </Menu>
+            <Suspense fallback={<FallbackLoading />}>
+              <LeftMenu />
+            </Suspense>
           </Sider>
         </span>
 
@@ -164,6 +117,21 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
                   />
                 )}
               </span>
+
+              <Breadcrumb>
+                <Breadcrumb.Item
+                  href="/"
+                  onClick={(event: any): void =>
+                    navigateToWithPrevent(event, 'dashboard', '/')
+                  }
+                >
+                  <HomeOutlined />
+                </Breadcrumb.Item>
+
+                <Breadcrumb.Item href="">
+                  <span>Dashboard</span>
+                </Breadcrumb.Item>
+              </Breadcrumb>
             </Header>
           </span>
 

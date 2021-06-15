@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { Form, Input, Button, Checkbox, Image } from 'antd'
+import { Form, Input, Button, Image } from 'antd'
 import { MailOutlined, LockOutlined } from '@ant-design/icons'
 
 import { UserType } from './../../types/user'
@@ -25,14 +25,14 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
     history.push('/')
   }
 
-  const onFinish: any = (values: FormDataType): void => {
+  const onFinish: any = (payload: FormDataType): void => {
     setLoading(true)
-    handleOnLoginSuccessfully(values)
+    handleOnLoginSuccessfully(payload)
 
-    if (values) {
-      AuthService.login(values.email || '', values.password || '')
+    if (payload) {
+      AuthService.login(payload.email || '', payload.password || '')
         .then((res: any): void => {
-          handleOnLoginSuccessfully(values)
+          handleOnLoginSuccessfully(payload)
         })
         .catch((err: any): void => {
           setLoading(false)
@@ -102,9 +102,9 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
       </Form.Item>
 
       <Form.Item>
-        <Form.Item name="remember" valuePropName="checked" noStyle={true}>
+        {/* <Form.Item name="remember" valuePropName="checked" noStyle={true}>
           <Checkbox>Remember me</Checkbox>
-        </Form.Item>
+        </Form.Item> */}
 
         <a className="login-form-forgot" href="/">
           Forgot password

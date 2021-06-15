@@ -1,5 +1,5 @@
 import { UserType } from './../types/user'
-
+import { IHeaderLink } from './../types/pageHeader'
 export interface StoreType {
   counter: any
   user: {
@@ -7,5 +7,8 @@ export interface StoreType {
   }
   spin: {
     isShowGlobalSpin: boolean
+  }
+  layout: {
+    headerLinks: IHeaderLink[]
   }
 }
