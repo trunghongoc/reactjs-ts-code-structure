@@ -1,5 +1,5 @@
-import { FC, Suspense, useEffect, useMemo, useState, lazy } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { FC, Suspense, useMemo, useState, lazy } from 'react'
+import { useSelector } from 'react-redux'
 import { Layout, Breadcrumb, Spin } from 'antd'
 import {
   MenuUnfoldOutlined,
@@ -15,7 +15,7 @@ import { Switch, Route, useHistory } from 'react-router-dom'
 import { RouterItemType } from './../../router/type'
 import { routers } from './../../router'
 // import AuthService from './../../services/user/auth.service'
-import { setGlobalSpin } from './../../redux/reducers/spinSlice'
+// import { setGlobalSpin } from './../../redux/reducers/spinSlice'
 
 const LeftMenu: FC = lazy((): Promise<any> => import('./Menu'))
 const { Header, Content, Sider } = Layout
@@ -38,7 +38,7 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
   const isShowGlobalSpin: boolean = useSelector(
     (state: StoreType): boolean => state.spin.isShowGlobalSpin
   )
-  const dispatch: any = useDispatch()
+  // const dispatch: any = useDispatch()
   const [collapsed, setCollapsed] = useState(false)
   const [, setCurrentMenuKeys] = useState<string[] | []>([])
 
@@ -67,12 +67,6 @@ export const AdminLayout: FC<Props> = (): JSX.Element => {
     event.preventDefault()
     navigateTo(activeKey, path)
   }
-
-  useEffect((): void => {
-    if (isLogedIn) {
-      dispatch(setGlobalSpin(false))
-    }
-  }, [isLogedIn, dispatch])
 
   return (
     <div className={className}>

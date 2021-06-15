@@ -21,13 +21,11 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
 
   const handleOnLoginSuccessfully: any = (user: UserType): void => {
     setLoading(false)
-    dispatch(setGlobalSpin(true))
     history.push('/')
   }
 
   const onFinish: any = (payload: FormDataType): void => {
     setLoading(true)
-    handleOnLoginSuccessfully(payload)
 
     if (payload) {
       AuthService.login(payload.email || '', payload.password || '')
