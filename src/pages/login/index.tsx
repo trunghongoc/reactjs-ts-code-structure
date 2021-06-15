@@ -80,6 +80,7 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
         <Input
           prefix={<MailOutlined className="site-form-item-icon" />}
           placeholder="Email"
+          disabled={loading}
         />
       </Form.Item>
 
@@ -96,6 +97,7 @@ const NormalLoginForm: FC<PropsType> = (): JSX.Element => {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
+          disabled={loading}
         />
       </Form.Item>
 
