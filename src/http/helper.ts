@@ -1,5 +1,9 @@
+// import moment from 'moment'
+
+// import UserService from './../services/user/user.service'
 import { UserType } from './../types/user'
 import { IAxiosHeader } from './type'
+// import { simpleHttp } from './simpleHttp'
 
 export const serialize: any = (obj: object): string => {
   const str: any = []
@@ -29,4 +33,12 @@ export function authHeader(): IAxiosHeader {
       'Content-Type': 'application/json'
     }
   }
+}
+
+export const isExpiredJWT: any = (errResponse: any): boolean => {
+  return (
+    errResponse?.respons?.status === 401 &&
+    errResponse?.config &&
+    !errResponse?.config?.__isRetryRequest
+  )
 }

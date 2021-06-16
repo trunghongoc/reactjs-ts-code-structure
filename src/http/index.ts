@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { env } from './../environments'
+import { simpleHttp } from './simpleHttp'
 import { authHeader } from './helper'
 import { IAxiosHeader, HttpConfigType } from './type'
 import UserService from './../services/user/user.service'
@@ -7,11 +8,6 @@ import UserService from './../services/user/user.service'
 declare const window: HttpConfigType
 
 const { fileConfigPath } = env
-
-export const originalAxios: any = axios.create({
-  timeout: 10000,
-  headers: { 'X-Custom-Header': 'foobar' }
-})
 
 const initialHeaders: IAxiosHeader = authHeader()
 const http: any = axios.create({
@@ -26,7 +22,7 @@ const getNewTokenIfExpired: any = (): string => {
 
 http.interceptors.request.use(async (config: any): Promise<any> => {
   if (!window?.httpConfig?.baseURL) {
-    const response: any = await originalAxios.get(`/${fileConfigPath}`)
+    const response: any = await simpleHttp.get(`/${fileConfigPath}`)
     window.httpConfig = response.data
   }
 
@@ -104,14 +100,13 @@ http.interceptors.response.use(
     console.log('----res-err:', err)
 
     return new Promise((resolve?: any, reject?: any): Promise<any> => {
-      const originalReq: any = err.config
+      const currentRequest: any = err.config
+
       if (
-        err?.respons?.status === 401 &&
-        err?.config &&
-        !err?.config?.__isRetryRequest
+        isExpiredJWT()
       ) {
-        originalReq._retry = true
-        const res: any = originalAxios
+        currentRequest._retry = true
+        const res: any = simpleHttp
           .post('/refresh', {
             token: localStorage.getItem('token'),
             refresh_token: localStorage.getItem('refresh_token')
@@ -119,15 +114,15 @@ http.interceptors.response.use(
           .then((_res: any): any => {
             UserService.setCurrentUser(_res.data)
             // this.setSession({ token: res.token, refresh_token: res.refresh })
-            // originalReq.headers['Token'] = _res.token
-            // originalReq.headers['Device'] = 'device'
+            // currentRequest.headers['Token'] = _res.token
+            // currentRequest.headers['Device'] = 'device'
             http.headers = {
               ...http.headers,
               Authorization: _res?.data?.accessToken
                 ? `Bearer ${_res.data.accessToken}`
                 : ''
             }
-            return http(originalReq)
+            return http(currentRequest)
           })
         resolve(res)
       }

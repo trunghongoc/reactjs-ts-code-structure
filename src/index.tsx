@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { env } from './environments'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { originalAxios } from './http'
+import { simpleHttp } from './http/simpleHttp'
 import { HttpConfigType } from './http/type'
 import UserService from './services/user/user.service'
 
@@ -36,7 +36,7 @@ const renderApp: VoidFunction = (): void => {
 }
 
 const initHttpAndRenderApp: VoidFunction = (): void => {
-  originalAxios
+  simpleHttp
     .get(`/${fileConfigPath}`)
     .then((res: any): any => {
       window.httpConfig = res.data
