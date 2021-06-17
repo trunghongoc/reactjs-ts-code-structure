@@ -37,7 +37,7 @@ export function authHeader(): IAxiosHeader {
 
 export const isExpiredJWT: any = (errResponse: any): boolean => {
   return (
-    errResponse?.respons?.status === 401 &&
+    errResponse?.response?.status === 401 &&
     errResponse?.config &&
     !errResponse?.config?.__isRetryRequest
   )
