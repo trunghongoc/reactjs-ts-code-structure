@@ -18,10 +18,6 @@ export const ExampleTable: FC<Props> = (): JSX.Element => {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        filters: [
-          { text: 'Joe', value: 'Joe' },
-          { text: 'Jim', value: 'Jim' }
-        ],
         sorter: (a: any, b: any): number => a.name.length - b.name.length,
         sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
         ellipsis: true
@@ -38,10 +34,6 @@ export const ExampleTable: FC<Props> = (): JSX.Element => {
         title: 'Address',
         dataIndex: 'address',
         key: 'address',
-        filters: [
-          { text: 'London', value: 'London' },
-          { text: 'New York', value: 'New York' }
-        ],
         sorter: (a: any, b: any): number => a.address.length - b.address.length,
         sortOrder: sortedInfo.columnKey === 'address' && sortedInfo.order,
         ellipsis: true
@@ -64,7 +56,12 @@ export const ExampleTable: FC<Props> = (): JSX.Element => {
 
   return (
     <>
-      <Table columns={columns} dataSource={data} onChange={handleChange} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        onChange={handleChange}
+        showSorterTooltip={false}
+      />
     </>
   )
 }
