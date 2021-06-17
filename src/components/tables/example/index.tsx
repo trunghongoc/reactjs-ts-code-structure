@@ -1,5 +1,6 @@
 import { FC, useState, useMemo } from 'react'
 import { Table } from 'antd'
+import './style.scss'
 
 import { data as MOCK_DATA } from './data'
 
@@ -55,14 +56,17 @@ export const ExampleTable: FC<Props> = (): JSX.Element => {
   }
 
   return (
-    <>
+    <div className="ant-table-custom">
       <Table
         columns={columns}
         dataSource={data}
         onChange={handleChange}
         showSorterTooltip={false}
+        rowClassName={(record: any, index: number): string =>
+          index % 2 === 0 ? 'table-row-light' : 'table-row-dark'
+        }
       />
-    </>
+    </div>
   )
 }
 

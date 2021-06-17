@@ -1,0 +1,39 @@
+.ant-table-custom {
+  tr {
+    > td {
+      &:first-child {
+        position: relative;
+        &::before {
+          content: '';
+          width: 3px;
+          height: 100%;
+          background: green;
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: block;
+        }
+      }
+    }
+
+    &.table-row-light {
+      > td {
+        &:first-child {
+          &::before {
+            background: green;
+          }
+        }
+      }
+    }
+
+    &.table-row-dark {
+      > td {
+        &:first-child {
+          &::before {
+            background: red;
+          }
+        }
+      }
+    }
+  }
+}
