@@ -22,5 +22,11 @@ export const routers: RouterItemType[] = [
     exact: false,
     component: lazy((): Promise<any> => import('./../pages/login')),
     isPrivate: false
+  },
+  {
+    path: '/corporates',
+    exact: true,
+    component: lazy((): Promise<any> => import('./../pages/corporates')),
+    isPrivate: true
   }
 ]
